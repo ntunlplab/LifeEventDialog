@@ -1,0 +1,43 @@
+Each line is a jsonl object of a conversation with the following format:
+{
+    "DailyDialog_id": Str,
+    "dialog_id": Str, # id in train/valid/test split
+    "events": EventsList, # list of events_per_turn
+    "coreferences": List, # a list of cluster_lists, each cluster_list is a list of tokens_id. Note that the 1st cluster must be S1 cluster and the 2nd must be S2. The S1/S2 might be an empty cluster.
+}
+
+EventsList = [
+    # events_per_turn:
+    [
+        # event:
+        {
+            "event_type": {
+                'explicit': Bool, # 1: explicit, 0: implicit
+                'Verb': {
+                    'tokens': Str,
+                    'tokens_id': Str, # Format: f'{StartID}-{EndID}'
+                },
+                'Class': Str,
+                'Frame': Str,
+            }
+            "participant": {
+                'subject': EntityDict,
+                'object': EntityDict,
+            },
+            "event_status": { 
+                'polarity': Bool, # 1: positive, 0: negative
+                'modality': Bool, # 1: actual, 0: hypothetical
+                'time': Str or Dict, # ['BEFORE', 'NOW', 'AFTER', 'CONTINUOUSLY', or an EntityDict refers to time in the dialogue
+            },
+        }, {}, ...
+    ], [], ...
+]
+
+
+EntityDict = {
+    "entity_id": Int, # which is also the index of cluster in the "coreferences" field
+    "tokens": Str,
+    "tokens_id": Str, # Foramt: f'{StartID}' or f'{StartID}-{EndID}', e.g. '0' or '0-1'
+}
+
+*if no object: object = {}
