@@ -1,7 +1,12 @@
 # Life Event Dialog (LED)
 
 Dataset for [LED: A Dataset for Life Event Extraction from Dialogs](http://arxiv.org/abs/2304.08327).
+
 In this paper, we present Life Event Dialog, a dataset containing fine-grained life event annotations on conversational data from [DailyDialog dataset](http://yanran.li/dailydialog.html). 
+
+
+## Example
+![example image](https://github.com/ntunlplab/LifeEventDialog/blob/main/example.png)
 
 
 ## Structure
@@ -11,7 +16,7 @@ Each line is a jsonl object of a conversation with the following format:
 - `DailyDialog_id`: The dialogue id to map to the original dialogue in DialyDialog dataset.
 - `dialog_id`: A unique identifier for each dialogue in LifeEventDialog\_[train/valid/test].jsonl
 - `events`: A list of `Events` in each turn.
-- `coreferences`: A list of clusters, each cluster is a list of tokens index. Note that the 1st cluster must be the cluster of speaker 1 (S1) and the 2nd must be of speaker 2 (S2). The cluster of S1/S2 might be an empty cluster if no events happen to S1/S2.
+- `coreferences`: A list of clusters, each cluster is a list of tokens\_id. Note that the 1st cluster must be the cluster of speaker 1 (S1) and the 2nd must be of speaker 2 (S2). The cluster of S1/S2 might be an empty cluster if no events happen to S1/S2.
 
 
 Each `Event` consists of the following schema:
@@ -21,7 +26,7 @@ Each `Event` consists of the following schema:
     'explicit': Bool, # 1: explicit, 0: implicit
     'Verb': {
         'tokens': Str,
-        'tokens_id': Str, # Format: f'{StartID}-{EndID}'
+        'tokens_id': Str, # Format: f'{start_index}-{end_index}'
     },
     'Class': Str,
     'Frame': Str,
@@ -41,7 +46,7 @@ where
 EntityDict = {
     "entity_id": Int, # which is also the index of cluster in the "coreferences" field
     "tokens": Str,
-    "tokens_id": Str, # Foramt: f'{StartID}' or f'{StartID}-{EndID}', e.g. '0' or '0-1'
+    "tokens_id": Str, # Foramt: f'{start_index}' or f'{start_index}-{end_index}', e.g. '0' or '0-1'
 }
 ```
 
